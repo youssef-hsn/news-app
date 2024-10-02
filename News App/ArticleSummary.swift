@@ -14,14 +14,14 @@ let dummyArticle = Article(
     author: "John Doe",
     publishedAt: "2024-10-02",
     url: "https://www.example.com/swiftui-takes-over",
-    media: Media(
+    media: [Media(
            mediaMetadata: [
                MediaMetadata(
                    url: "https://api.dicebear.com/9.x/icons/png", // Sample Dicebear URL
                    format: "Standard Thumbnail"
                )
            ]
-        )
+        )]
 )
 
 struct Article: Codable, Identifiable {
@@ -31,9 +31,9 @@ struct Article: Codable, Identifiable {
     let author: String
     let publishedAt: String
     let url: String
-    let media: Media
+    let media: [Media]
     
-    enum codingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case id, title, url, media
         case description = "abstract"
         case author = "byline"
@@ -60,14 +60,22 @@ struct ArticleSummary: View {
     let article: Article
     var body: some View {
         HStack{
-            AsyncImage(url: URL(string: article.media.mediaMetadata.first!.url)!) { image in
-                image
+            if let urlString = article.media.first?.mediaMetadata.first?.url, let url = URL(string: urlString) {
+                AsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 50)
+                        .cornerRadius(25)
+                } placeholder: {
+                    ProgressView()
+                }
+            } else {
+                Image(systemName: "exclamationmark.triangle.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(height: 50)
-                    .cornerRadius(25)
-            } placeholder: {
-                ProgressView()
+                    .foregroundColor(.red)
             }
             VStack (alignment: .leading){
                 Text(article.title)
