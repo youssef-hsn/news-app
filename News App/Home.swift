@@ -7,20 +7,23 @@
 
 import SwiftUI
 
+struct JSON_Articles: Codable {
+    let results: [Article]
+}
+
 struct Home: View {
-    @State var test: String = ""
     var body: some View {
         NavigationView {
             VStack {
                 List {
                     EmptyView()
-                }.searchable(text: $test)
+                }
             }
             .navigationTitle("NY Times Most Popular")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(
                 leading: Button(action: {
-                    print("Menu button tapped")
+                   
                 }) {
                     Image(systemName: "line.horizontal.3")
                 },
