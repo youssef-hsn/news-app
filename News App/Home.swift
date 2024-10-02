@@ -16,7 +16,9 @@ struct Home: View {
         NavigationView {
             VStack {
                 List {
-                    EmptyView()
+                    ForEach (0..<10) { _ in
+                        ArticleSummary(article: dummyArticle)
+                    }
                 }
             }
             .navigationTitle("NY Times Most Popular")

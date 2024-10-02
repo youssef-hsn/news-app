@@ -7,6 +7,15 @@
 
 import SwiftUI
 
+let dummyArticle = Article(
+    id: 1,
+    title: "Breaking News: SwiftUI Takes Over",
+    description: "This is a brief description of the article about SwiftUI's growing influence in the development world.",
+    author: "John Doe",
+    publishedAt: "2024-10-02",
+    url: "https://www.example.com/swiftui-takes-over"
+)
+
 struct Article: Codable, Identifiable {
     let id: Int
     let title: String
@@ -31,13 +40,6 @@ struct ArticleSummary: View {
 }
 
 #Preview {
-    ArticleSummary(article: Article(
-        id: 1,
-        title: "Breaking News: SwiftUI Takes Over",
-        description: "This is a brief description of the article about SwiftUI's growing influence in the development world.",
-        author: "John Doe",
-        publishedAt: "2024-10-02",
-        url: "https://www.example.com/swiftui-takes-over"
-    ))
+    ArticleSummary(article: dummyArticle)
 
 }
