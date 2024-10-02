@@ -15,13 +15,13 @@ let dummyArticle = Article(
     publishedAt: "2024-10-02",
     url: "https://www.example.com/swiftui-takes-over",
     media: Media(
-               mediaMetadata: [
-                   MediaMetadata(
-                       url: "https://api.dicebear.com/9.x/icons/svg", // Sample Dicebear URL
-                       format: "Standard Thumbnail"
-                   )
-               ]
-            )
+           mediaMetadata: [
+               MediaMetadata(
+                   url: "https://api.dicebear.com/9.x/icons/png", // Sample Dicebear URL
+                   format: "Standard Thumbnail"
+               )
+           ]
+        )
 )
 
 struct Article: Codable, Identifiable {
@@ -59,7 +59,28 @@ struct MediaMetadata: Codable {
 struct ArticleSummary: View {
     let article: Article
     var body: some View {
-        Text(article.title)
+        HStack{
+            AsyncImage(url: URL(string: article.media.mediaMetadata.first!.url)!) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 50)
+                    .cornerRadius(25)
+            } placeholder: {
+                ProgressView()
+            }
+            VStack (alignment: .leading){
+                Text(article.title)
+                    .font(.headline)
+                HStack{
+                    Text(article.author)
+                        .font(.subheadline)
+                    Spacer()
+                    Text(article.publishedAt)
+                        .font(.subheadline)
+                }
+            }.padding(.leading, 2)
+        }.padding()
     }
 }
 
