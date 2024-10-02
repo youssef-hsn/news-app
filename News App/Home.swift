@@ -7,17 +7,22 @@
 
 import SwiftUI
 
-struct JSON_Articles: Codable {
-    let results: [Article]
-}
-
 struct Home: View {
+    @State private var articles: [Article] = []
+    @State private var isLoading = true
+    private let newsService = NewsService()
+    
     var body: some View {
+        
         NavigationView {
             VStack {
-                List {
-                    ForEach (0..<10) { _ in
-                        ArticleSummary(article: dummyArticle)
+                if isLoading {
+                    ProgressView() // Show progress while loading
+                } else {
+                    List(articles) { article in
+                        NavigationLink(destination: ArticleDetail(article: article)) {
+                            ArticleSummary(article: article)
+                        }
                     }
                 }
             }
@@ -43,6 +48,21 @@ struct Home: View {
                     }
                 }
             )
+        }.onAppear(perform: fetchArticles)
+    }
+    
+    private func fetchArticles() {
+        newsService.fetchArticles { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let fetchedArticles):
+                    self.articles = fetchedArticles
+                    self.isLoading = false
+                case .failure(let error):
+                    print("Error fetching articles: \(error)")
+                    self.isLoading = false
+                }
+            }
         }
     }
 }
