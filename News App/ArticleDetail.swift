@@ -8,11 +8,22 @@
 import SwiftUI
 
 struct ArticleDetail: View {
+    let article: Article
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            VStack {
+                Text("W.I.P.")
+                    .font(.title)
+                Text(article.title)
+                    .font(.headline)
+                Text(article.description)
+                    .font(.body)
+                Link("Read More", destination: URL(string: article.url)!)
+            }
+        }.navigationTitle("Article Details")
     }
 }
 
 #Preview {
-    ArticleDetail()
+    ArticleDetail(article: dummyArticle)
 }
